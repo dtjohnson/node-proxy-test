@@ -1,6 +1,7 @@
 "use strict";
 
 const http = require('http');
+const keepAliveAgent = new http.Agent({ keepAlive: true });
 
 module.exports = opts => {
     return (req, res) => {
@@ -9,7 +10,8 @@ module.exports = opts => {
             path: req.url,
             headers: req.headers,
             hostname: opts.upstreamHost,
-            port: opts.upstreamPort
+            port: opts.upstreamPort,
+            agent: keepAliveAgent
         }, proxyRes => {
             res.statusCode = proxyRes.statusCode;
 
